@@ -1,0 +1,647 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Advice in Bloom — Share Your #1 Best Advice</title>
+<meta name="description" content="Advice in Bloom is a free, open wall of life's best advice. Share your personal #1 best advice in 2–3 sentences, and read wisdom from people everywhere.">
+<link rel="canonical" href="https://kimberlybruton-sys.github.io/adviceinbloom.github/">
+<meta name="theme-color" content="#F8EBDD">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Advice in Bloom — Share Your #1 Best Advice">
+<meta property="og:description" content="A free, open wall of life's best advice. Add yours in 2–3 sentences and read wisdom from people everywhere.">
+<meta property="og:url" content="https://kimberlybruton-sys.github.io/adviceinbloom.github/">
+<meta name="twitter:card" content="summary">
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","name":"Advice in Bloom","url":"https://kimberlybruton-sys.github.io/adviceinbloom.github/","description":"A free, open wall where anyone can share and read their personal #1 best advice."}
+</script>
+
+<style>
+  /* SIB-15 Serenity in Bloom palette — master hex values */
+  :root {
+    --plum: #6B3E62;
+    --sage: #8FA68E;
+    --peach: #F4B59B;
+    --soft-blue: #5F7F8F;
+    --pink: #F3C7D1;
+    --cream: #F8EBDD;
+    --golden-beige: #C9A778;
+    --slate-blue: #2F4A56;
+    --warm-taupe: #7A6149;
+    --off-white: #FFFFFF;
+    --espresso: #3A2F2A;
+    --aubergine: #493B50;
+    --misty-sage: #B8C8B7;
+    --dusty-mauve: #B18B9D;
+    --morning-mist: #D5E1E1;
+
+    --serif: Georgia, "Times New Roman", serif;
+    --sans: Calibri, Carlito, Arial, sans-serif;
+    --radius: 14px;
+  }
+
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--cream);
+    color: var(--espresso);
+    font-family: var(--sans);
+    font-size: 18px;
+    line-height: 1.5;
+  }
+
+  /* One botanical detail near an outer corner (decoration only) */
+  .sprig {
+    position: absolute;
+    top: 0; right: 0;
+    width: min(260px, 45vw);
+    height: auto;
+    pointer-events: none;
+    opacity: .9;
+  }
+
+  .wrap {
+    position: relative;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 16px 64px;
+  }
+
+  header {
+    position: relative;
+    padding: 56px 0 28px;
+  }
+  .eyebrow {
+    margin: 0 0 8px;
+    font-size: 15px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--warm-taupe);
+  }
+  h1 {
+    margin: 0;
+    font-family: var(--serif);
+    font-weight: normal;
+    font-size: clamp(40px, 8vw, 58px);
+    line-height: 1.05;
+    color: var(--plum);
+  }
+  .lede {
+    max-width: 34em;
+    margin: 14px 0 0;
+    font-size: 19px;
+  }
+
+  /* Entry form */
+  .compose {
+    background: var(--off-white);
+    border: 1.5px solid var(--sage);
+    border-radius: var(--radius);
+    padding: 24px;
+    box-shadow: 0 1px 0 rgba(58,47,42,.04), 0 10px 30px -18px rgba(107,62,98,.35);
+  }
+  .compose h2 {
+    margin: 0 0 6px;
+    font-family: var(--serif);
+    font-size: 24px;
+    color: var(--plum);
+  }
+  .rules {
+    margin: 0 0 16px;
+    font-size: 16px;
+    color: var(--espresso);
+  }
+  .rules strong { color: var(--aubergine); }
+  label {
+    display: block;
+    font-weight: bold;
+    margin: 0 0 6px;
+    color: var(--slate-blue);
+  }
+  textarea, input[type="text"], input[type="search"] {
+    width: 100%;
+    font: inherit;
+    color: var(--espresso);
+    background: var(--off-white);
+    border: 2px solid var(--slate-blue);
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+  textarea { min-height: 128px; resize: vertical; }
+  textarea::placeholder, input::placeholder { color: #7a6f69; }
+  textarea:focus, input:focus, button:focus-visible {
+    outline: 3px solid var(--plum);
+    outline-offset: 2px;
+  }
+  .meter {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 6px 0 16px;
+    font-size: 15px;
+    color: var(--warm-taupe);
+  }
+  .meter .bad { color: #9b2c2c; font-weight: bold; }
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    align-items: end;
+  }
+  .row .name { flex: 1 1 220px; }
+  .row .name small { font-weight: normal; color: var(--warm-taupe); }
+  .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+  button {
+    font: inherit;
+    cursor: pointer;
+    border-radius: 999px;
+    border: 2px solid var(--plum);
+  }
+  .primary {
+    background: var(--plum);
+    color: var(--off-white);
+    font-weight: bold;
+    padding: 12px 28px;
+  }
+  .primary:hover { background: var(--aubergine); border-color: var(--aubergine); }
+  .primary[disabled] { opacity: .6; cursor: wait; }
+  .ghost {
+    background: transparent;
+    color: var(--plum);
+    padding: 8px 18px;
+    font-size: 16px;
+  }
+  .ghost:hover { background: rgba(107,62,98,.08); }
+
+  .notice {
+    margin: 16px 0 0;
+    padding: 12px 14px;
+    border-radius: 10px;
+    font-size: 16px;
+  }
+  .notice[hidden] { display: none; }
+  .notice.ok { background: #DDE4DD; color: var(--espresso); border-left: 5px solid var(--sage); }
+  .notice.wait { background: var(--morning-mist); color: var(--slate-blue); border-left: 5px solid var(--soft-blue); }
+  .notice.no { background: #FBE7EC; color: var(--aubergine); border-left: 5px solid var(--plum); }
+
+  .share {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin: 18px 0 0;
+    font-size: 16px;
+    color: var(--warm-taupe);
+  }
+
+  /* Wall of advice */
+  .wall-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    margin: 48px 0 14px;
+  }
+  .wall-head h2 {
+    margin: 0;
+    font-family: var(--serif);
+    font-size: 28px;
+    color: var(--plum);
+  }
+  .count { color: var(--warm-taupe); font-size: 16px; }
+  .divider {
+    height: 1px;
+    background: var(--dusty-mauve);
+    border: 0;
+    margin: 0 0 18px;
+  }
+  .search { margin: 0 0 20px; }
+  .search label { position: absolute; left: -9999px; }
+
+  .list { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+  .card {
+    position: relative;
+    background: var(--off-white);
+    border-radius: var(--radius);
+    border-left: 4px solid var(--misty-sage);
+    padding: 18px 20px 14px 22px;
+  }
+  .card:nth-child(3n+2) { border-left-color: var(--pink); }
+  .card:nth-child(3n+3) { border-left-color: var(--peach); }
+  .card blockquote {
+    margin: 0;
+    font-family: var(--serif);
+    font-size: 20px;
+    line-height: 1.5;
+    color: var(--espresso);
+    overflow-wrap: anywhere;
+  }
+  .card .meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+    font-size: 15px;
+    color: var(--warm-taupe);
+  }
+  .card .who { color: var(--plum); font-weight: bold; }
+  .report {
+    background: none;
+    border: 0;
+    padding: 4px 6px;
+    font-size: 14px;
+    color: var(--warm-taupe);
+    text-decoration: underline;
+    border-radius: 6px;
+  }
+  .report:hover { color: var(--plum); }
+
+  .empty, .loading { text-align: center; color: var(--warm-taupe); padding: 28px 0; }
+  .more { display: block; margin: 22px auto 0; }
+
+  footer {
+    margin-top: 56px;
+    padding-top: 18px;
+    border-top: 1px solid var(--golden-beige);
+    font-size: 15px;
+    color: var(--warm-taupe);
+    text-align: center;
+  }
+  footer a { color: var(--plum); }
+
+  .preview-banner {
+    background: var(--aubergine);
+    color: var(--off-white);
+    text-align: center;
+    font-size: 15px;
+    padding: 8px 16px;
+  }
+
+  @media (max-width: 520px) {
+    body { font-size: 17px; }
+    header { padding-top: 44px; }
+    .compose { padding: 18px; }
+    .card blockquote { font-size: 18px; }
+    .primary { width: 100%; }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .card.new { animation: bloom .6s ease-out; }
+    @keyframes bloom { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  }
+</style>
+</head>
+<body>
+<div id="previewBanner" class="preview-banner" hidden>Preview mode: entries are saved only in this browser until the moderator is connected.</div>
+
+<div class="wrap">
+  <svg class="sprig" viewBox="0 0 260 220" aria-hidden="true" focusable="false">
+    <g fill="none" stroke="#8FA68E" stroke-width="2" stroke-linecap="round">
+      <path d="M258 6 C 210 40, 170 70, 120 150"/>
+      <path d="M214 38 C 222 60, 232 70, 246 74"/>
+      <path d="M178 72 C 170 96, 172 112, 182 126"/>
+    </g>
+    <g fill="#8FA68E" fill-opacity=".35">
+      <path d="M214 38 c 18 -4 34 4 40 22 c -18 6 -34 -2 -40 -22z"/>
+      <path d="M190 58 c -6 -18 0 -34 18 -42 c 6 18 0 34 -18 42z"/>
+      <path d="M178 72 c 18 2 30 14 32 32 c -18 -2 -30 -14 -32 -32z"/>
+      <path d="M152 104 c -10 -14 -10 -32 4 -44 c 10 14 10 32 -4 44z"/>
+      <path d="M140 122 c 18 6 26 20 24 38 c -18 -6 -26 -20 -24 -38z"/>
+    </g>
+    <g fill="#F3C7D1">
+      <circle cx="124" cy="146" r="9"/><circle cx="114" cy="140" r="7"/><circle cx="118" cy="156" r="7"/>
+    </g>
+    <circle cx="119" cy="147" r="4" fill="#C9A778"/>
+    <g fill="#B18B9D" fill-opacity=".55">
+      <circle cx="238" cy="96" r="5"/><circle cx="246" cy="104" r="4"/><circle cx="232" cy="106" r="4"/>
+    </g>
+  </svg>
+
+  <header>
+    <p class="eyebrow">One piece of wisdom, from everyone</p>
+    <h1>Advice in Bloom</h1>
+    <p class="lede">What is the single best piece of advice you have ever received or learned? Plant it here so it can help someone else grow.</p>
+  </header>
+
+  <main>
+    <section class="compose" aria-labelledby="composeTitle">
+      <h2 id="composeTitle">Share your #1 best advice</h2>
+      <p class="rules" id="rules">
+        <strong>2–3 sentences only.</strong> Your best advice of any kind, on any topic.
+        Please, no spam, explicit language, pornography, anything illegal, copyrighted text (song lyrics, book passages),
+        links, selling or self-promotion, or anything else inappropriate or unkind.
+        Every entry is reviewed by an automatic moderator before it appears.
+      </p>
+
+      <form id="adviceForm" novalidate>
+        <label for="advice">Your advice</label>
+        <textarea id="advice" name="advice" maxlength="400" required
+          aria-describedby="rules meter"
+          placeholder="Write 2–3 sentences. Example: Pause before you answer when you're upset. Most words spoken in anger are the ones we wish we could take back."></textarea>
+        <div class="meter" id="meter" aria-live="polite">
+          <span id="sentenceCount">0 sentences</span>
+          <span id="charCount">0 / 400</span>
+        </div>
+
+        <div class="hp" aria-hidden="true">
+          <label for="website">Leave this empty</label>
+          <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+        </div>
+
+        <div class="row">
+          <div class="name">
+            <label for="name">First name or initials <small>(optional)</small></label>
+            <input type="text" id="name" name="name" maxlength="30" autocomplete="given-name" placeholder="e.g. Grace, or J.M.">
+          </div>
+          <button type="submit" class="primary" id="submitBtn">Plant my advice</button>
+        </div>
+        <p class="notice" id="notice" role="status" hidden></p>
+      </form>
+
+      <div class="share">
+        <span>Know someone wise?</span>
+        <button type="button" class="ghost" id="shareBtn">Share this page</button>
+      </div>
+    </section>
+
+    <section aria-labelledby="wallTitle">
+      <div class="wall-head">
+        <h2 id="wallTitle">The garden of advice</h2>
+        <span class="count" id="count"></span>
+      </div>
+      <hr class="divider">
+      <div class="search">
+        <label for="q">Search the advice</label>
+        <input type="search" id="q" placeholder="Search advice, e.g. kindness, money, patience">
+      </div>
+      <ol class="list" id="list" aria-live="polite"></ol>
+      <p class="loading" id="loading">Gathering the garden…</p>
+      <button type="button" class="ghost more" id="moreBtn" hidden>Show more advice</button>
+    </section>
+  </main>
+
+  <footer>
+    <p>Advice in Bloom is a free, open collection. Advice shared here is personal opinion, not professional, medical, legal or financial guidance.</p>
+    <p>See something that doesn't belong? Use “Report” on any entry.</p>
+  </footer>
+</div>
+
+<script>
+/* =========================================================
+   CONFIG: paste your Google Apps Script web app URL here.
+   Leave empty to run in local preview mode.
+   ========================================================= */
+const CONFIG = {
+  API_URL: "",
+  PAGE_SIZE: 30
+};
+
+/* ---------- Content rules (mirrors the server checks in Code.gs) ---------- */
+const RULES = {
+  MIN_CHARS: 30,
+  MAX_CHARS: 400,
+  MIN_SENTENCES: 2,
+  MAX_SENTENCES: 3
+};
+
+const LINK_RE = /(https?:\/\/|www\.|\b[a-z0-9-]+\s?(\.|\(dot\)|\[dot\]|\sdot\s)\s?(com|net|org|io|co|ly|me|xyz|info|biz|app|shop|store|online|site|gg|tv|us|uk|ca|link|click|live|ai)\b)/i;
+const EMAIL_RE = /[a-z0-9._%+-]+\s?(@|\(at\)|\[at\])\s?[a-z0-9.-]+\.[a-z]{2,}/i;
+const PHONE_RE = /\+?\d[\d\s().-]{7,}\d/;
+const HANDLE_RE = /(^|\s)@[a-z0-9_]{3,}/i;
+const PROMO_RE = /\b(buy now|promo code|coupon|discount code|dm me|follow me|subscribe to|my channel|cash ?app|venmo|paypal|onlyfans|giveaway|free money|click here|check out my|use code)\b/i;
+const BLOCKED_WORDS = ["fuck","fuk","fck","shit","bitch","cunt","dick","cock","pussy","asshole","bastard","slut","whore","porn","porno","nude","nudes","sex","sexy","xxx","milf","hentai","nigger","nigga","faggot","fag","retard","rape","penis","vagina","boobs","tits","dildo","horny","motherfucker","bullshit","jackass","wank","twat"];
+
+function normalizeForWords(t) {
+  return t.toLowerCase()
+    .replace(/[0@4]/g, m => ({ "0": "o", "@": "a", "4": "a" })[m])
+    .replace(/[1!|]/g, "i").replace(/3/g, "e").replace(/[5$]/g, "s").replace(/7/g, "t")
+    .replace(/[*_.\-]/g, "");
+}
+
+function countSentences(t) {
+  const cleaned = t.replace(/\b(Mr|Mrs|Ms|Dr|St|Jr|Sr|vs|etc|e\.g|i\.e|a\.m|p\.m)\./gi, "$1");
+  const parts = cleaned.match(/[^.!?]+[.!?]+["'”’)\]]*|[^.!?]+$/g) || [];
+  return parts.filter(p => /[a-z].*[a-z]/i.test(p)).length;
+}
+
+function checkAdvice(advice, name) {
+  const t = advice.trim();
+  if (t.length < RULES.MIN_CHARS) return "Please write a little more: 2–3 full sentences.";
+  if (t.length > RULES.MAX_CHARS) return "Please keep it under " + RULES.MAX_CHARS + " characters.";
+  const both = t + " " + (name || "");
+  if (LINK_RE.test(both) || EMAIL_RE.test(both)) return "Links, web addresses and emails aren't allowed.";
+  if (PHONE_RE.test(both) || HANDLE_RE.test(both)) return "Phone numbers and social handles aren't allowed.";
+  if (PROMO_RE.test(both)) return "Selling or self-promotion isn't allowed.";
+  const words = normalizeForWords(both).split(/[^a-z]+/);
+  if (words.some(w => BLOCKED_WORDS.includes(w))) return "Please keep your words family-friendly.";
+  if (/(.)\1{5,}/.test(t)) return "That looks like repeated characters. Please write normally.";
+  const letters = t.replace(/[^a-z]/gi, "");
+  if (letters.length > 20 && letters.replace(/[^A-Z]/g, "").length / letters.length > 0.6) return "Please don't write in all capital letters.";
+  const n = countSentences(t);
+  if (n < RULES.MIN_SENTENCES || n > RULES.MAX_SENTENCES) return "Please use 2–3 sentences (you have " + n + ").";
+  return "";
+}
+
+/* ---------- Data layer: live API or local preview ---------- */
+const PREVIEW = !CONFIG.API_URL;
+const LOCAL_KEY = "aib-preview-entries";
+const SEED = [
+  { id: "s1", advice: "Pause before you answer when you're upset. Most of the words we regret are the ones spoken in the first ten seconds.", name: "Grace", ts: "2026-10-27T15:00:00Z" },
+  { id: "s2", advice: "Save a little from every paycheck, even if it's tiny. The habit matters more than the amount, and one day it will matter a lot.", name: "R.T.", ts: "2026-10-26T12:00:00Z" },
+  { id: "s3", advice: "Write down three things you're grateful for before bed. It quietly changes what you notice the next day.", name: "", ts: "2026-10-25T09:00:00Z" }
+];
+
+function clientId() {
+  try {
+    let id = localStorage.getItem("aib-client");
+    if (!id) { id = (crypto.randomUUID ? crypto.randomUUID() : String(Math.random()).slice(2)); localStorage.setItem("aib-client", id); }
+    return id;
+  } catch (e) { return "anon"; }
+}
+
+function readLocal() {
+  try { return JSON.parse(localStorage.getItem(LOCAL_KEY)) || SEED.slice(); } catch (e) { return SEED.slice(); }
+}
+function writeLocal(entries) {
+  try { localStorage.setItem(LOCAL_KEY, JSON.stringify(entries)); } catch (e) {}
+}
+
+async function api(payload) {
+  const res = await fetch(CONFIG.API_URL, {
+    method: "POST",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify(payload)
+  });
+  return res.json();
+}
+
+async function loadEntries() {
+  if (PREVIEW) return readLocal();
+  const res = await fetch(CONFIG.API_URL + "?action=list");
+  const data = await res.json();
+  if (!data.ok) throw new Error(data.message || "Could not load");
+  return data.entries;
+}
+
+async function submitEntry(advice, name, website) {
+  if (PREVIEW) {
+    const entry = { id: "p" + Date.now(), advice, name, ts: new Date().toISOString() };
+    const all = readLocal(); all.unshift(entry); writeLocal(all);
+    return { ok: true, status: "approved", entry, message: "Thank you! Your advice is now in bloom." };
+  }
+  return api({ action: "submit", advice, name, website, client: clientId(), elapsed: Date.now() - pageLoadedAt });
+}
+
+async function reportEntry(id) {
+  if (PREVIEW) return { ok: true, message: "Thanks for letting us know." };
+  return api({ action: "report", id, client: clientId() });
+}
+
+/* ---------- UI ---------- */
+const $ = id => document.getElementById(id);
+const pageLoadedAt = Date.now();
+let entries = [];
+let filtered = [];
+let shown = 0;
+
+function fmtDate(iso) {
+  const d = new Date(iso);
+  return isNaN(d) ? "" : d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
+}
+
+function card(e, isNew) {
+  const li = document.createElement("li");
+  li.className = "card" + (isNew ? " new" : "");
+  const q = document.createElement("blockquote");
+  q.textContent = e.advice;
+  const meta = document.createElement("div");
+  meta.className = "meta";
+  const left = document.createElement("span");
+  const who = document.createElement("span");
+  who.className = "who";
+  who.textContent = e.name ? "— " + e.name : "— Anonymous";
+  left.append(who, document.createTextNode("  ·  " + fmtDate(e.ts)));
+  const rep = document.createElement("button");
+  rep.type = "button";
+  rep.className = "report";
+  rep.textContent = "Report";
+  rep.setAttribute("aria-label", "Report this advice");
+  rep.addEventListener("click", async () => {
+    if (!confirm("Report this advice as inappropriate?")) return;
+    rep.disabled = true;
+    try { const r = await reportEntry(e.id); rep.textContent = r.ok ? "Reported" : "Try again"; }
+    catch (err) { rep.textContent = "Try again"; rep.disabled = false; }
+  });
+  meta.append(left, rep);
+  li.append(q, meta);
+  return li;
+}
+
+function render(reset) {
+  const list = $("list");
+  if (reset) { list.innerHTML = ""; shown = 0; }
+  const next = filtered.slice(shown, shown + CONFIG.PAGE_SIZE);
+  next.forEach(e => list.appendChild(card(e)));
+  shown += next.length;
+  $("moreBtn").hidden = shown >= filtered.length;
+  $("loading").hidden = true;
+  const q = $("q").value.trim();
+  if (!filtered.length) {
+    $("loading").hidden = false;
+    $("loading").textContent = q ? "No advice matches “" + q + "” yet." : "Be the first to plant your advice.";
+  }
+  $("count").textContent = entries.length === 1 ? "1 piece of advice" : entries.length.toLocaleString() + " pieces of advice";
+}
+
+function applyFilter() {
+  const q = $("q").value.trim().toLowerCase();
+  filtered = q ? entries.filter(e => (e.advice + " " + (e.name || "")).toLowerCase().includes(q)) : entries;
+  render(true);
+}
+
+function updateMeter() {
+  const t = $("advice").value;
+  const n = countSentences(t);
+  const sc = $("sentenceCount");
+  sc.textContent = n === 1 ? "1 sentence" : n + " sentences";
+  sc.className = t.trim() && (n < 2 || n > 3) ? "bad" : "";
+  $("charCount").textContent = t.length + " / " + RULES.MAX_CHARS;
+}
+
+function notice(kind, msg) {
+  const el = $("notice");
+  el.className = "notice " + kind;
+  el.textContent = msg;
+  el.hidden = false;
+}
+
+$("advice").addEventListener("input", updateMeter);
+$("q").addEventListener("input", applyFilter);
+$("moreBtn").addEventListener("click", () => render(false));
+
+$("adviceForm").addEventListener("submit", async ev => {
+  ev.preventDefault();
+  const advice = $("advice").value.trim().replace(/\s+/g, " ");
+  const name = $("name").value.trim().replace(/\s+/g, " ");
+  const problem = checkAdvice(advice, name);
+  if (problem) { notice("no", problem); $("advice").focus(); return; }
+
+  const btn = $("submitBtn");
+  btn.disabled = true;
+  btn.textContent = "Checking…";
+  try {
+    const r = await submitEntry(advice, name, $("website").value);
+    if (r.ok && r.status === "approved") {
+      notice("ok", r.message || "Thank you! Your advice is now in bloom.");
+      entries.unshift(r.entry);
+      $("q").value = "";
+      filtered = entries;
+      render(true);
+      const first = $("list").firstElementChild; if (first) first.classList.add("new");
+      $("adviceForm").reset();
+    } else if (r.ok && r.status === "pending") {
+      notice("wait", r.message || "Thank you! Your advice is waiting for a quick review.");
+      $("adviceForm").reset();
+    } else {
+      notice("no", r.message || "Sorry, that entry doesn't fit our guidelines.");
+    }
+  } catch (err) {
+    notice("no", "We couldn't reach the garden just now. Please try again in a moment.");
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Plant my advice";
+    updateMeter();
+  }
+});
+
+$("shareBtn").addEventListener("click", async () => {
+  const data = { title: "Advice in Bloom", text: "Share your #1 best advice, and read everyone else's.", url: location.href };
+  try {
+    if (navigator.share) { await navigator.share(data); return; }
+    await navigator.clipboard.writeText(location.href);
+    $("shareBtn").textContent = "Link copied!";
+    setTimeout(() => $("shareBtn").textContent = "Share this page", 2000);
+  } catch (e) {}
+});
+
+(async function init() {
+  $("previewBanner").hidden = !PREVIEW;
+  updateMeter();
+  try {
+    entries = await loadEntries();
+    filtered = entries;
+    render(true);
+  } catch (err) {
+    $("loading").textContent = "The garden is resting. Please refresh in a moment.";
+  }
+})();
+</script>
+</body>
+</html>
