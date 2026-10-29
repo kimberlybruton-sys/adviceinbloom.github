@@ -254,6 +254,19 @@
     color: var(--warm-taupe);
   }
   .card .who { color: var(--plum); font-weight: bold; }
+  .card.pinned {
+    border: 1.5px solid var(--golden-beige);
+    border-left: 4px solid var(--plum);
+    background: var(--off-white);
+  }
+  .pin-label {
+    margin: 0 0 8px;
+    font-size: 14px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--plum);
+    font-weight: bold;
+  }
   .report {
     background: none;
     border: 0;
@@ -401,7 +414,9 @@
    ========================================================= */
 const CONFIG = {
   API_URL: "https://script.google.com/macros/s/AKfycbwRz9JenklIoWBKmESOTBJ-D-oQ9dT_P9WN8j0cXXYN2Z4VaLKpEoFHLW6DJBhyzc4Izg/exec",
-  PAGE_SIZE: 30
+  PAGE_SIZE: 30,
+  // Entries (by ID from the Approved tab) that always show first, without a Report button.
+  PINNED_IDS: ["449911a4-68e2-46d0-96c1-1b29d8d18532"]
 };
 
 /* ---------- Content rules (mirrors the server checks in Code.gs) ---------- */
@@ -517,9 +532,21 @@ function fmtDate(iso) {
   return isNaN(d) ? "" : d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
 }
 
+function isPinned(e) { return CONFIG.PINNED_IDS.includes(e.id); }
+
+function pinFirst(list) {
+  return list.filter(isPinned).concat(list.filter(e => !isPinned(e)));
+}
+
 function card(e, isNew) {
   const li = document.createElement("li");
-  li.className = "card" + (isNew ? " new" : "");
+  li.className = "card" + (isNew ? " new" : "") + (isPinned(e) ? " pinned" : "");
+  if (isPinned(e)) {
+    const tag = document.createElement("p");
+    tag.className = "pin-label";
+    tag.textContent = "✿ Featured";
+    li.appendChild(tag);
+  }
   const q = document.createElement("blockquote");
   q.textContent = e.advice;
   const meta = document.createElement("div");
@@ -540,7 +567,8 @@ function card(e, isNew) {
     try { const r = await reportEntry(e.id); rep.textContent = r.ok ? "Reported" : "Try again"; }
     catch (err) { rep.textContent = "Try again"; rep.disabled = false; }
   });
-  meta.append(left, rep);
+  meta.append(left);
+  if (!isPinned(e)) meta.append(rep);
   li.append(q, meta);
   return li;
 }
@@ -601,11 +629,12 @@ $("adviceForm").addEventListener("submit", async ev => {
     const r = await submitEntry(advice, name, $("website").value);
     if (r.ok && r.status === "approved") {
       notice("ok", r.message || "Thank you! Your advice is now in bloom.");
-      entries.unshift(r.entry);
+      const at = entries.filter(isPinned).length;
+      entries.splice(at, 0, r.entry);
       $("q").value = "";
       filtered = entries;
       render(true);
-      const first = $("list").firstElementChild; if (first) first.classList.add("new");
+      const added = $("list").children[at]; if (added) added.classList.add("new");
       $("adviceForm").reset();
     } else if (r.ok && r.status === "pending") {
       notice("wait", r.message || "Thank you! Your advice is waiting for a quick review.");
@@ -636,7 +665,7 @@ $("shareBtn").addEventListener("click", async () => {
   $("previewBanner").hidden = !PREVIEW;
   updateMeter();
   try {
-    entries = await loadEntries();
+    entries = pinFirst(await loadEntries());
     filtered = entries;
     render(true);
   } catch (err) {
